@@ -27,16 +27,17 @@ public class Start {
 		}*/
 		
 		
-		//table.put("lol", 5);
-		//table.put("lol", 6);
+		table.put("lol", 5);
+		table.put("lol", 6);
 		table.put("lol1", 3);
 		table.put("lol2", 2);
 		table.put("lol3", 4);
 		table.put("asd", 4);
 		//table.put("plkmjkl546", 4);
-		//table.put("zxvbkdfhsjg41231", 4);
+		table.put("zxvbkdfhsjg41231", 4);
 		//table.put("dsaf3y8hjnkafsd", 4);
 		table.put("kristina", 4);
+		table.put("kristina", 6);
 		
 	}
 
