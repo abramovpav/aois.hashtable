@@ -35,7 +35,7 @@ public class HashTable {
 	}
 	
 	
-	private int findPlace(final String id, final Integer data, final int index) {
+	private Integer findPlace(final String id, final Integer data, final int index) {
 		if (table[index] != null) {
 			if (table[index].getHash() == hash(id.hashCode(), capacity)) {
 				Entry entry = table[index];
@@ -52,7 +52,9 @@ public class HashTable {
 				}
 				else
 				{
-					searchForEmptyEntry(id, data, index, entry);
+					Integer result = searchForEmptyEntry(id, data, index, entry);
+					if (result != 0)
+						return result;
 				}
 			}
 			else
@@ -74,7 +76,7 @@ public class HashTable {
 		}
 		
 		
-		return -1;
+		return null;
 	}
 
 	private Integer searchForEmptyEntry(final String id, final Integer data,
@@ -127,8 +129,8 @@ public class HashTable {
 		else
 		{
 			Entry entry = table[index].collusionNext();
-			//рср опндслюрэ врн я INDEX декюрэ б findPlace
-			findPlace(id, data, index);
+			
+			findPlace(id, data, entry.getIndex());
 			return true;
 		}
 	}
