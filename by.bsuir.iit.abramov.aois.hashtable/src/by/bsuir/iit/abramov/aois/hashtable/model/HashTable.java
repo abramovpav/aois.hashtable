@@ -4,11 +4,44 @@ public class HashTable {
 	public static final String	ERROR_NULL_POINTER_EXCEPTION	= "***ERROR***: NullPointer Exception";
 	public static final String	ERROR_NO_SUCH_KEY				= "***ERROR***: No such key";
 
-	public static int hash(int h, final int capacity) {
+	public static int hash(String id, final int capacity) {
 
-		h ^= (h >>> 20) ^ (h >>> 12);
-		final int n = h ^ (h >>> 7) ^ (h >>> 4);
+		//h ^= (h >>> 20) ^ (h >>> 12);
+		//final int n = h ^ (h >>> 7) ^ (h >>> 4);
+		char c = Character.toLowerCase(id.toCharArray()[0]);
+		int n = c * 33;
+		 
+		c = Character.toLowerCase(id.toCharArray()[1]);
+		n = c * 33;
 		return HashTable.indexFor(n, capacity);
+	}
+	
+	public String getString() {
+		String str = "";
+		str += "index id\thash\tdata\tnext\tcollusion\n";
+		for (int i = 0; i < table.length; i++) {
+			final Entry entry = table[i];
+			if (entry.hasNext() && entry.hasCollusionNext()) {
+					str +=entry.getIndex() + ". " + entry.getId() + "\t"
+							+ entry.getHash() + "\t" + entry.getData() + "\t"
+							+ entry.next().getIndex() + "\t"
+							+ entry.collusionNext().getIndex() + "\n";
+			} else if (entry.hasNext()) {
+					str += entry.getIndex() + ". " + entry.getId() + "\t"
+							+ entry.getHash() + "\t" + entry.getData() + "\t"
+							+ entry.next().getIndex() + "\tnull" + "\n";
+			} else if (entry.hasCollusionNext()) {
+					str += entry.getIndex() + ". " + entry.getId() + "\t"
+							+ entry.getHash() + "\t" + entry.getData() + "\tnull\t"
+							+ entry.collusionNext().getIndex() + "\n";
+			} else {
+				str += entry.getIndex() + ". " + entry.getId() + "\t"
+								+ entry.getHash() + "\t" + entry.getData()
+								+ "\tnull\tnull" + "\n";
+			}
+		}
+		printTable();
+		return str;
 	}
 
 	static int indexFor(final int h, final int capacity) {
@@ -19,7 +52,7 @@ public class HashTable {
 
 	private final Entry[]	table;
 	private int				size;
-	private final int		capacity	= 5;
+	private final int		capacity	= 10;
 
 	public HashTable() {
 
@@ -47,16 +80,16 @@ public class HashTable {
 	private Integer findPlace(final String id, final Integer data, final int index) {
 
 		if (table[index] != null) {
-			if (table[index].getHash() == HashTable.hash(id.hashCode(), capacity)) {
+			if (table[index].getHash() == HashTable.hash(id, capacity)) {
 				Entry entry = table[index];
 				while (entry.hasNext()) {
-					if (entry.getId() == id) {
+					if (entry.getId().equalsIgnoreCase(id)) {
 						entry.setHashandData(data, index);
 						return entry.getIndex();
 					}
 					entry = entry.next();
 				}
-				if (entry.getId() == id) {
+				if (entry.getId().equalsIgnoreCase(id)) {
 					entry.setHashandData(data, index);
 					return entry.getIndex();
 				} else {
@@ -104,7 +137,7 @@ public class HashTable {
 
 	public final Integer get(final String id) {
 
-		final int hash = HashTable.hash(id.hashCode(), capacity);
+		final int hash = HashTable.hash(id, capacity);
 		System.out.println("*****************************************");
 		System.out.println("get " + id + "\t" + hash);
 		final Entry entry = table[hash];
@@ -208,7 +241,7 @@ public class HashTable {
 		/*
 		 * if (size == capacity) { return; }
 		 */
-		final int hash = HashTable.hash(id.hashCode(), capacity);
+		final int hash = HashTable.hash(id, capacity);
 		System.out.println("*****************************************");
 		System.out.println("id hash data next prev collusion*********");
 		System.out.println("*****************************************");
@@ -222,7 +255,7 @@ public class HashTable {
 				};
 			}
 		} else {
-			entry.setIDandData(id, data, HashTable.hash(id.hashCode(), capacity));
+			entry.setIDandData(id, data, HashTable.hash(id, capacity));
 			size++;
 			if (entry.hasCollusionNext()) {
 				entry.setNext(entry.collusionNext());
@@ -233,7 +266,7 @@ public class HashTable {
 
 	public void remove(final String id) {
 
-		final int hash = HashTable.hash(id.hashCode(), capacity);
+		final int hash = HashTable.hash(id, capacity);
 		System.out.println("*****************************************");
 		System.out.println("remove " + id + "\t" + hash);
 		final Entry entry = table[hash];

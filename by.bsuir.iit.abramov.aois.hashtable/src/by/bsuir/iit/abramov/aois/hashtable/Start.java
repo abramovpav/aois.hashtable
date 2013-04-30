@@ -3,6 +3,7 @@ package by.bsuir.iit.abramov.aois.hashtable;
 import java.io.IOException;
 
 import by.bsuir.iit.abramov.aois.hashtable.model.HashTable;
+import by.bsuir.iit.abramov.aois.hashtable.view.Form;
 
 public class Start {
 
@@ -13,14 +14,13 @@ public class Start {
 	public static void main(final String[] args) throws IOException {
 
 		final HashTable table = new HashTable();
-		/*
-		 * while(true) { byte [] b = new byte [10]; System.in.read(b); char [] c
-		 * = new char [10]; for (int i = 0; i < 10; ++i) { c[i] = (char) b[i]; }
-		 * String str = String.copyValueOf(c); System.out.println(str);
-		 * System.out.println(table.hash(str.hashCode(), table.getCapacity()));
-		 * }
-		 */
-
+		 
+		Form form = new Form(table);
+		form.setVisible(true);
+		
+		
+		 
+/*
 		table.put("lol", 5);
 		table.printTable();
 		table.put("lol", 6);
@@ -50,7 +50,7 @@ public class Start {
 		// table.put("dsaf3y8hjnkafsd", 4);
 
 		//
-
+*/
 	}
 
 }
