@@ -4,44 +4,16 @@ public class HashTable {
 	public static final String	ERROR_NULL_POINTER_EXCEPTION	= "***ERROR***: NullPointer Exception";
 	public static final String	ERROR_NO_SUCH_KEY				= "***ERROR***: No such key";
 
-	public static int hash(String id, final int capacity) {
+	public static int hash(final String id, final int capacity) {
 
-		//h ^= (h >>> 20) ^ (h >>> 12);
-		//final int n = h ^ (h >>> 7) ^ (h >>> 4);
+		// h ^= (h >>> 20) ^ (h >>> 12);
+		// final int n = h ^ (h >>> 7) ^ (h >>> 4);
 		char c = Character.toLowerCase(id.toCharArray()[0]);
 		int n = c * 33;
-		 
+
 		c = Character.toLowerCase(id.toCharArray()[1]);
 		n = c * 33;
 		return HashTable.indexFor(n, capacity);
-	}
-	
-	public String getString() {
-		String str = "";
-		str += "index id\thash\tdata\tnext\tcollusion\n";
-		for (int i = 0; i < table.length; i++) {
-			final Entry entry = table[i];
-			if (entry.hasNext() && entry.hasCollusionNext()) {
-					str +=entry.getIndex() + ". " + entry.getId() + "\t"
-							+ entry.getHash() + "\t" + entry.getData() + "\t"
-							+ entry.next().getIndex() + "\t"
-							+ entry.collusionNext().getIndex() + "\n";
-			} else if (entry.hasNext()) {
-					str += entry.getIndex() + ". " + entry.getId() + "\t"
-							+ entry.getHash() + "\t" + entry.getData() + "\t"
-							+ entry.next().getIndex() + "\tnull" + "\n";
-			} else if (entry.hasCollusionNext()) {
-					str += entry.getIndex() + ". " + entry.getId() + "\t"
-							+ entry.getHash() + "\t" + entry.getData() + "\tnull\t"
-							+ entry.collusionNext().getIndex() + "\n";
-			} else {
-				str += entry.getIndex() + ". " + entry.getId() + "\t"
-								+ entry.getHash() + "\t" + entry.getData()
-								+ "\tnull\tnull" + "\n";
-			}
-		}
-		printTable();
-		return str;
 	}
 
 	static int indexFor(final int h, final int capacity) {
@@ -51,6 +23,7 @@ public class HashTable {
 	}
 
 	private final Entry[]	table;
+
 	private int				size;
 	private final int		capacity	= 10;
 
@@ -163,6 +136,33 @@ public class HashTable {
 	public final int getCapacity() {
 
 		return capacity;
+	}
+
+	public String getString() {
+
+		String str = "";
+		str += "index id\thash\tdata\tnext\tcollusion\n";
+		for (int i = 0; i < table.length; i++) {
+			final Entry entry = table[i];
+			if (entry.hasNext() && entry.hasCollusionNext()) {
+				str += entry.getIndex() + ". " + entry.getId() + "\t" + entry.getHash()
+						+ "\t" + entry.getData() + "\t" + entry.next().getIndex() + "\t"
+						+ entry.collusionNext().getIndex() + "\n";
+			} else if (entry.hasNext()) {
+				str += entry.getIndex() + ". " + entry.getId() + "\t" + entry.getHash()
+						+ "\t" + entry.getData() + "\t" + entry.next().getIndex()
+						+ "\tnull" + "\n";
+			} else if (entry.hasCollusionNext()) {
+				str += entry.getIndex() + ". " + entry.getId() + "\t" + entry.getHash()
+						+ "\t" + entry.getData() + "\tnull\t"
+						+ entry.collusionNext().getIndex() + "\n";
+			} else {
+				str += entry.getIndex() + ". " + entry.getId() + "\t" + entry.getHash()
+						+ "\t" + entry.getData() + "\tnull\tnull" + "\n";
+			}
+		}
+		printTable();
+		return str;
 	}
 
 	private final boolean isCollusionNext(final String id, final Integer data,
